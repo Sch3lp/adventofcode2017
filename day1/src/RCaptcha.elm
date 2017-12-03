@@ -24,12 +24,27 @@ rcaptchaHelper sequence =
         |> Array.foldl (+) 0
 
 
+findNextIndex : Int -> Int -> Int
+findNextIndex listSize idx =
+    let
+        nextIdx =
+            idx + 1
+    in
+        if nextIdx <= (listSize - 1) then
+            nextIdx
+        else
+            negate (listSize - nextIdx)
+
+
 retainIfMatchesNext : Array Int -> (Int -> Int -> Int)
 retainIfMatchesNext seq =
     \idx a ->
         let
+            nextIdx =
+                findNextIndex (Array.length seq) idx
+
             elementAtNextIndex =
-                Array.get (idx + 1) seq
+                Array.get nextIdx seq
         in
             case elementAtNextIndex of
                 Just b ->
@@ -38,18 +53,5 @@ retainIfMatchesNext seq =
                     else
                         0
 
-                -- Compare last number to first number
                 Nothing ->
-                    let
-                        first =
-                            Array.get 0 seq
-                    in
-                        case first of
-                            Just b ->
-                                if a == b then
-                                    a
-                                else
-                                    0
-
-                            _ ->
-                                0
+                    0
