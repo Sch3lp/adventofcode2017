@@ -1,11 +1,14 @@
 module Checksum exposing (..)
 
 
+sumWith : (List Int -> Int) -> List (List Int) -> Int
+sumWith fn spreadSheet =
+    (List.map fn >> List.sum) spreadSheet
+
+
 checksum : List (List Int) -> Int
 checksum spreadsheet =
-    spreadsheet
-        |> List.map rowDiff
-        |> List.sum
+    sumWith rowDiff spreadsheet
 
 
 rowDiff : List Int -> Int
@@ -26,9 +29,13 @@ rowDiff row =
 
 totalEvenDivision : List (List Int) -> Int
 totalEvenDivision spreadsheet =
-    spreadsheet
-        |> List.map rowDivision
-        |> List.sum
+    sumWith rowDivision spreadsheet
+
+
+
+-- The assignment doesn't state what should happen
+-- when there are multiple evenly divisible pairs
+-- so I assumed there's always one and only one evenly divisible pair
 
 
 rowDivision : List Int -> Int
@@ -57,13 +64,13 @@ permute acc row =
 (/?) : Int -> Int -> Maybe Int
 (/?) fst snd =
     let
-        even =
+        evenlyDivisible =
             (rem fst snd) == 0
 
         result =
             fst // snd
     in
-        case even of
+        case evenlyDivisible of
             True ->
                 Just result
 
