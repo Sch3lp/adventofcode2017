@@ -20,7 +20,7 @@ rcaptchaHelper : Array Int -> Int
 rcaptchaHelper sequence =
     sequence
         |> Array.indexedMap (retainIfMatchesNext sequence)
-        |> Debug.log "indexedMap:"
+        -- |> Debug.log "indexedMap:"
         |> Array.foldl (+) 0
 
 

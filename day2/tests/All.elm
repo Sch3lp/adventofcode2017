@@ -11,8 +11,8 @@ suite =
         [ describe "findNextIndex"
             [ test "Cycle at end of list" <|
                 \_ ->
-                    findNextIndex 4 4
-                        |> Expect.equal 2
+                    findNextIndex 4 3
+                        |> Expect.equal 1
             ]
         , describe "rcaptcha"
             [ test "everything matches" <|
