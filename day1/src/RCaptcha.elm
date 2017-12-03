@@ -38,6 +38,7 @@ retainIfMatchesNext seq =
                     else
                         0
 
+                -- Compare last number to first number
                 Nothing ->
                     let
                         first =
