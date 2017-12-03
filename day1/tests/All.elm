@@ -1,9 +1,8 @@
 module All exposing (..)
 
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
 import Test exposing (..)
-import Main exposing (rcaptcha)
+import RCaptcha exposing (rcaptcha)
 
 
 suite : Test
