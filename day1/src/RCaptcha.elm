@@ -24,11 +24,19 @@ rcaptchaHelper sequence =
         |> Array.foldl (+) 0
 
 
+halfway : Int -> Int
+halfway listSize =
+    round <| toFloat listSize / toFloat 2
+
+
 findNextIndex : Int -> Int -> Int
 findNextIndex listSize idx =
     let
+        halfwayIdx =
+            halfway listSize
+
         nextIdx =
-            idx + 1
+            idx + halfwayIdx
     in
         if nextIdx <= (listSize - 1) then
             nextIdx
