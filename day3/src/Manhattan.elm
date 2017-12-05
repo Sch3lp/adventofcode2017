@@ -1,11 +1,45 @@
 module Manhattan exposing (..)
 
+import List.Extra exposing (..)
+
 
 type Direction
     = Up
     | Right
     | Down
     | Left
+
+
+next : Direction -> Direction
+next from =
+    case from of
+        Right ->
+            Up
+
+        Up ->
+            Left
+
+        Left ->
+            Down
+
+        Down ->
+            Right
+
+
+previous : Direction -> Direction
+previous from =
+    case from of
+        Right ->
+            Down
+
+        Down ->
+            Left
+
+        Left ->
+            Up
+
+        Up ->
+            Right
 
 
 
@@ -40,7 +74,23 @@ nextDirection steps =
             Right
 
         h :: t ->
-            Right
+            let
+                stepsInSameDirection =
+                    List.Extra.takeWhile (\step -> step == h) steps |> List.length
+
+                stepsInPreviousDirection =
+                    steps
+                        |> List.Extra.dropWhile (\step -> step == h)
+                        |> List.Extra.takeWhile
+                            (\step -> step == previous h)
+                        |> List.length
+            in
+                case stepsInSameDirection <= stepsInPreviousDirection of
+                    True ->
+                        next h
+
+                    False ->
+                        h
 
 
 manhattan : Int -> Int
