@@ -1,5 +1,6 @@
 module Zone exposing (..)
 
+import List.Extra exposing (..)
 import Util exposing (..)
 
 
@@ -21,7 +22,54 @@ zoneNumber { corner } =
 
 positionIsOnBottomRightCorner : Int -> Zone -> Bool
 positionIsOnBottomRightCorner position { corner } =
-    (corner - position) == 0
+    corner == position
+
+
+isOnACorner : Zone -> Int -> Bool
+isOnACorner zone position =
+    corners zone |> List.any (\corner -> corner == position)
+
+
+corners : Zone -> List Int
+corners zone =
+    let
+        side =
+            sideLength zone
+
+        stepsInBetweenCorners =
+            side - 1
+
+        bottomRight =
+            zone.corner
+
+        bottomLeft =
+            bottomRight - stepsInBetweenCorners
+
+        topLeft =
+            bottomLeft - stepsInBetweenCorners
+
+        topRight =
+            topLeft - stepsInBetweenCorners
+    in
+        [ bottomRight, bottomLeft, topLeft, topRight ]
+
+
+closestCorner : Zone -> Int -> Int
+closestCorner zone position =
+    corners zone
+        |> List.map (\corner -> ( corner, abs (position - corner) ))
+        |> Debug.log
+            ("corners and their diffs from "
+                ++ (toString position)
+            )
+        |> List.Extra.minimumBy (\( fst, snd ) -> snd)
+        |> Maybe.map (\( fst, snd ) -> fst)
+        |> Maybe.withDefault 0
+
+
+middleOfASide : Zone -> Int
+middleOfASide zone =
+    toFloat (sideLength zone) / 2 |> ceiling
 
 
 nextZone : Zone -> Zone

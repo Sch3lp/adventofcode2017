@@ -42,67 +42,6 @@ suite =
                         |> Expect.equal
                             (Zone 363609)
             ]
-        , describe "nextZone"
-            [ test "for Zone 1 returns Zone 9" <|
-                \_ ->
-                    nextZone (Zone 1)
-                        |> Expect.equal
-                            (Zone 9)
-            , test "for Zone 9 returns Zone 25" <|
-                \_ ->
-                    nextZone (Zone 9)
-                        |> Expect.equal
-                            (Zone 25)
-            , test "for Zone 25 returns Zone 49" <|
-                \_ ->
-                    nextZone (Zone 25)
-                        |> Expect.equal
-                            (Zone 49)
-            , test "for Zone 363609 returns Zone 49" <|
-                \_ ->
-                    nextZone (Zone 363609)
-                        |> Expect.equal
-                            (Zone 366025)
-            ]
-        , describe "previousZone"
-            [ test "for Zone 1 returns Zone 1" <|
-                \_ ->
-                    previousZone (Zone 1)
-                        |> Expect.equal
-                            (Zone 1)
-            , test "for Zone 25 returns Zone 9" <|
-                \_ ->
-                    previousZone (Zone 25)
-                        |> Expect.equal
-                            (Zone 9)
-            , test "for Zone 49 returns Zone 25" <|
-                \_ ->
-                    previousZone (Zone 49)
-                        |> Expect.equal
-                            (Zone 25)
-            , test "for Zone 363609 returns Zone 361201" <|
-                \_ ->
-                    previousZone (Zone 363609)
-                        |> Expect.equal
-                            (Zone 361201)
-            ]
-        , describe "sideLength of Zone"
-            [ test "for Zone 9 is 3" <|
-                \_ ->
-                    sideLength (Zone 9)
-                        |> Expect.equal
-                            3
-            , test "for Zone 25 is 5" <|
-                \_ ->
-                    sideLength (Zone 25)
-                        |> Expect.equal
-                            5
-            , test "for Zone 363609 is 603" <|
-                \_ ->
-                    sideLength (Zone 363609)
-                        |> Expect.equal
-                            603
-            ]
         , skip <|
             describe
                 "stepsAwayFromMiddle"

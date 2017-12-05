@@ -24,10 +24,10 @@ manhattanSteps position =
 
 stepsAwayFromMiddle : Int -> Zone -> Int
 stepsAwayFromMiddle position zone =
-    if positionIsOnBottomRightCorner position zone then
-        (sideLength zone) - 1
+    if isOnACorner zone position then
+        middleOfASide zone
     else
-        position
+        closestCorner zone position
 
 
 findZone : Int -> Zone
