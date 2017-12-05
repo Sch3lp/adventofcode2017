@@ -112,12 +112,11 @@ suite =
                     closestCorner (Zone 25) 12
                         |> Expect.equal
                             13
-            , only <|
-                test "closest to bottom right from right" <|
-                    \_ ->
-                        closestCorner (Zone 25) 10
-                            |> Expect.equal
-                                25
+            , test "closest to bottom right from right" <|
+                \_ ->
+                    closestCorner (Zone 25) 10
+                        |> Expect.equal
+                            25
             , test "closest to bottom right from bottom" <|
                 \_ ->
                     closestCorner (Zone 25) 24
