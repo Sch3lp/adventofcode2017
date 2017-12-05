@@ -8,69 +8,113 @@ import Manhattan exposing (..)
 suite : Test
 suite =
     describe "Manhattan"
-        [ describe "spiral"
-            [ test "with 1" <|
+        [ describe "findZone"
+            [ test "for position 1 returns Zone 1" <|
                 \_ ->
-                    spiral 1
+                    findZone 1
                         |> Expect.equal
-                            [ Right ]
-            , test "with 2" <|
+                            (Zone 1)
+            , test "for position 2 returns Zone 9" <|
                 \_ ->
-                    spiral 2
+                    findZone 2
                         |> Expect.equal
-                            [ Right, Up ]
-            , test "with 5" <|
+                            (Zone 9)
+            , test "for position 5 returns Zone 9" <|
                 \_ ->
-                    spiral 5
+                    findZone 5
                         |> Expect.equal
-                            [ Right, Up, Left, Left ]
-            , test "with 7" <|
+                            (Zone 9)
+            , test "position is a corner, position 9 returns Zone 9" <|
                 \_ ->
-                    spiral 7
+                    findZone 9
                         |> Expect.equal
-                            [ Right, Up, Left, Left, Down, Down ]
-            , test "with 10" <|
+                            (Zone 9)
+            , test "for position 10 returns Zone 25" <|
                 \_ ->
-                    spiral 9
+                    findZone 10
                         |> Expect.equal
-                            [ Right, Up, Left, Left, Down, Down, Right, Right, Right ]
+                            (Zone 25)
             , test "with 361527" <|
                 \_ ->
-                    spiral 361527
-                        |> List.length
+                    findZone 361527
                         |> Expect.equal
-                            361527
+                            (Zone 363609)
             ]
-        , describe "manhattanSteps"
-            [ test "for 1 is empty" <|
+        , describe "nextZone"
+            [ test "for Zone 1 returns Zone 9" <|
                 \_ ->
-                    manhattanSteps 1
-                        |> Expect.equal []
-            , test "for 12 is 3 steps" <|
+                    nextZone (Zone 1)
+                        |> Expect.equal
+                            (Zone 9)
+            , test "for Zone 9 returns Zone 25" <|
                 \_ ->
-                    manhattanSteps 12
-                        |> Expect.equal [ Down, Left, Left ]
-            , test "for 23 is 2 steps" <|
+                    nextZone (Zone 9)
+                        |> Expect.equal
+                            (Zone 25)
+            , test "for Zone 25 returns Zone 49" <|
                 \_ ->
-                    manhattanSteps 23
-                        |> Expect.equal [ Up, Up ]
+                    nextZone (Zone 25)
+                        |> Expect.equal
+                            (Zone 49)
+            , test "for Zone 363609 returns Zone 49" <|
+                \_ ->
+                    nextZone (Zone 363609)
+                        |> Expect.equal
+                            (Zone 366025)
             ]
-        , describe "manhattan"
-            [ test "for 1 is 0 steps" <|
+        , describe "previousZone"
+            [ test "for Zone 1 returns Zone 1" <|
                 \_ ->
-                    manhattan 1
-                        |> Expect.equal 0
-            , test "for 12 is 3 steps" <|
+                    previousZone (Zone 1)
+                        |> Expect.equal
+                            (Zone 1)
+            , test "for Zone 25 returns Zone 9" <|
                 \_ ->
-                    manhattan 12
-                        |> Expect.equal 3
-            , test "for 23 is 2 steps" <|
+                    previousZone (Zone 25)
+                        |> Expect.equal
+                            (Zone 9)
+            , test "for Zone 49 returns Zone 25" <|
                 \_ ->
-                    manhattan 23
-                        |> Expect.equal 2
-            , test "for 1024 is 31 steps" <|
+                    previousZone (Zone 49)
+                        |> Expect.equal
+                            (Zone 25)
+            , test "for Zone 363609 returns Zone 49" <|
                 \_ ->
-                    manhattan 1024
-                        |> Expect.equal 31
+                    previousZone (Zone 363609)
+                        |> Expect.equal
+                            (Zone 361201)
             ]
+
+        -- , describe "manhattanSteps"
+        --     [ test "for 1 is empty" <|
+        --         \_ ->
+        --             manhattanSteps 1
+        --                 |> Expect.equal []
+        --     , test "for 12 is 3 steps" <|
+        --         \_ ->
+        --             manhattanSteps 12
+        --                 |> Expect.equal [ Down, Left, Left ]
+        --     , test "for 23 is 2 steps" <|
+        --         \_ ->
+        --             manhattanSteps 23
+        --                 |> Expect.equal [ Up, Up ]
+        --     ]
+        -- , describe "manhattan"
+        --     [ test "for 1 is 0 steps" <|
+        --         \_ ->
+        --             manhattan 1
+        --                 |> Expect.equal 0
+        --     , test "for 12 is 3 steps" <|
+        --         \_ ->
+        --             manhattan 12
+        --                 |> Expect.equal 3
+        --     , test "for 23 is 2 steps" <|
+        --         \_ ->
+        --             manhattan 23
+        --                 |> Expect.equal 2
+        --     , test "for 1024 is 31 steps" <|
+        --         \_ ->
+        --             manhattan 1024
+        --                 |> Expect.equal 31
+        --     ]
         ]
