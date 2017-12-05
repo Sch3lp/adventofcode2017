@@ -30,6 +30,11 @@ stepsAwayFromMiddle position zone =
         closestCorner zone position
 
 
+stepsToAccessPort : Zone -> Int
+stepsToAccessPort zone =
+    0
+
+
 findZone : Int -> Zone
 findZone position =
     if position == 1 then
