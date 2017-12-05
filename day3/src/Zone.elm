@@ -7,6 +7,23 @@ type alias Zone =
     { corner : Int }
 
 
+sideLength : Zone -> Int
+sideLength zone =
+    zoneNumber zone
+
+
+zoneNumber : Zone -> Int
+zoneNumber { corner } =
+    toFloat corner
+        |> sqrt
+        |> ceiling
+
+
+positionIsOnBottomRightCorner : Int -> Zone -> Bool
+positionIsOnBottomRightCorner position { corner } =
+    (corner - position) == 0
+
+
 nextZone : Zone -> Zone
 nextZone zone =
     advanceZone Outwards zone
@@ -33,14 +50,9 @@ advanceZone sense zone =
 
 
 advZone : (Int -> Int -> Int) -> Zone -> Zone
-advZone fn { corner } =
+advZone fn zone =
     let
-        zoneNumber =
-            toFloat corner
-                |> sqrt
-                |> ceiling
-
         nextCorner =
-            powerTwo (fn zoneNumber 2)
+            powerTwo (fn (zoneNumber zone) 2)
     in
         Zone nextCorner
