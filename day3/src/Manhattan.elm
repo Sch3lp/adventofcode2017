@@ -24,10 +24,20 @@ manhattanSteps position =
 
 stepsAwayFromMiddle : Int -> Zone -> Int
 stepsAwayFromMiddle position zone =
-    if isOnACorner zone position then
-        middleOfASide zone
-    else
-        closestCorner zone position
+    let
+        distanceToMiddle =
+            distance (middleOfASide zone) (sideLength zone)
+
+        distanceFromCorner =
+            distanceFromClosestCorner zone position
+
+        stepsToMiddle =
+            distance distanceToMiddle distanceFromCorner
+    in
+        if isOnACorner zone position then
+            distanceToMiddle
+        else
+            stepsToMiddle
 
 
 stepsToAccessPort : Zone -> Int

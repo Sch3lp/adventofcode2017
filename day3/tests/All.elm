@@ -42,90 +42,89 @@ suite =
                         |> Expect.equal
                             (Zone 363609)
             ]
-        , skip <|
-            describe
-                "stepsAwayFromMiddle"
-                [ test "on bottom side, on middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 23 (Zone 25)
-                            |> Expect.equal
-                                0
-                , test "on right side, on middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 11 (Zone 25)
-                            |> Expect.equal
-                                0
-                , test "on top side, on middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 15 (Zone 25)
-                            |> Expect.equal
-                                0
-                , test "on left side, on middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 19 (Zone 25)
-                            |> Expect.equal
-                                0
-                , test "on bottom side, overshooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 24 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on right side, overshooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 12 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on top side, overshooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 16 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on left side, overshooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 20 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on bottom side, undershooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 22 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on right side, undershooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 10 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on top side, undershooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 14 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "on left side, undershooting middle" <|
-                    \_ ->
-                        stepsAwayFromMiddle 18 (Zone 25)
-                            |> Expect.equal
-                                1
-                , test "in top right corner" <|
-                    \_ ->
-                        stepsAwayFromMiddle 13 (Zone 25)
-                            |> Expect.equal
-                                2
-                , test "in top left corner" <|
-                    \_ ->
-                        stepsAwayFromMiddle 17 (Zone 25)
-                            |> Expect.equal
-                                2
-                , test "in bottom right corner" <|
-                    \_ ->
-                        stepsAwayFromMiddle 25 (Zone 25)
-                            |> Expect.equal
-                                2
-                , test "in bottom left corner" <|
-                    \_ ->
-                        stepsAwayFromMiddle 21 (Zone 25)
-                            |> Expect.equal
-                                2
-                ]
+        , describe
+            "stepsAwayFromMiddle"
+            [ test "on bottom side, on middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 23 (Zone 25)
+                        |> Expect.equal
+                            0
+            , test "on right side, on middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 11 (Zone 25)
+                        |> Expect.equal
+                            0
+            , test "on top side, on middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 15 (Zone 25)
+                        |> Expect.equal
+                            0
+            , test "on left side, on middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 19 (Zone 25)
+                        |> Expect.equal
+                            0
+            , test "on bottom side, overshooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 24 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on right side, overshooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 12 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on top side, overshooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 16 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on left side, overshooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 20 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on bottom side, undershooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 22 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on right side, undershooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 10 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on top side, undershooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 14 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "on left side, undershooting middle" <|
+                \_ ->
+                    stepsAwayFromMiddle 18 (Zone 25)
+                        |> Expect.equal
+                            1
+            , test "in top right corner" <|
+                \_ ->
+                    stepsAwayFromMiddle 13 (Zone 25)
+                        |> Expect.equal
+                            2
+            , test "in top left corner" <|
+                \_ ->
+                    stepsAwayFromMiddle 17 (Zone 25)
+                        |> Expect.equal
+                            2
+            , test "in bottom right corner" <|
+                \_ ->
+                    stepsAwayFromMiddle 25 (Zone 25)
+                        |> Expect.equal
+                            2
+            , test "in bottom left corner" <|
+                \_ ->
+                    stepsAwayFromMiddle 21 (Zone 25)
+                        |> Expect.equal
+                            2
+            ]
         , skip <|
             describe "manhattanSteps"
                 [ test "for 1 is empty" <|

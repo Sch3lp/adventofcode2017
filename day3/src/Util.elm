@@ -12,3 +12,8 @@ nextUneven a =
         a + 1
     else
         a
+
+
+distance : Int -> Int -> Int
+distance from to =
+    abs (from - to)

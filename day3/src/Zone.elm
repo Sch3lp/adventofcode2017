@@ -54,24 +54,37 @@ corners zone =
         [ bottomRight, bottomLeft, topLeft, topRight ]
 
 
-closestCorner : Zone -> Int -> Int
-closestCorner zone position =
+closestCornerAndDistance : Zone -> Int -> Maybe ( Int, Int )
+closestCornerAndDistance zone position =
     corners zone
         |> List.append [ (previousZone zone).corner ]
-        |> List.map (\corner -> ( corner, abs (position - corner) ))
-        |> Debug.log
-            ("corners and their diffs from "
-                ++ (toString position)
-            )
-        |> List.Extra.minimumBy (\( fst, snd ) -> snd)
-        |> Maybe.map (\( fst, snd ) -> fst)
-        |> Maybe.map
-            (\theClosestCorner ->
-                if (theClosestCorner == (previousZone zone).corner) then
-                    zone.corner
-                else
-                    theClosestCorner
-            )
+        |> List.map (\corner -> ( corner, distance position corner ))
+        |> List.Extra.minimumBy (\( corner, dist ) -> dist)
+        |> correctionForCloserToPreviousZone zone
+
+
+correctionForCloserToPreviousZone : Zone -> Maybe ( Int, Int ) -> Maybe ( Int, Int )
+correctionForCloserToPreviousZone zone =
+    Maybe.map
+        (\( theClosestCorner, dist ) ->
+            if (theClosestCorner == (previousZone zone).corner) then
+                ( zone.corner, 1 )
+            else
+                ( theClosestCorner, dist )
+        )
+
+
+closestCorner : Zone -> Int -> Int
+closestCorner zone position =
+    closestCornerAndDistance zone position
+        |> Maybe.map (\( corner, dist ) -> corner)
+        |> Maybe.withDefault 0
+
+
+distanceFromClosestCorner : Zone -> Int -> Int
+distanceFromClosestCorner zone position =
+    closestCornerAndDistance zone position
+        |> Maybe.map (\( corner, dist ) -> dist)
         |> Maybe.withDefault 0
 
 
