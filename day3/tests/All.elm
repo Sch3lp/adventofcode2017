@@ -125,21 +125,6 @@ suite =
                         |> Expect.equal
                             2
             ]
-        , skip <|
-            describe "manhattanSteps"
-                [ test "for 1 is empty" <|
-                    \_ ->
-                        manhattanSteps 1
-                            |> Expect.equal []
-                , test "for 12 is 3 steps" <|
-                    \_ ->
-                        manhattanSteps 12
-                            |> Expect.equal [ Down, Left, Left ]
-                , test "for 23 is 2 steps" <|
-                    \_ ->
-                        manhattanSteps 23
-                            |> Expect.equal [ Up, Up ]
-                ]
         , describe "manhattan"
             [ test "for 1 is 0 steps" <|
                 \_ ->

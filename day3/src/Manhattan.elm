@@ -4,18 +4,6 @@ import Zone exposing (..)
 import Util exposing (..)
 
 
-type Direction
-    = Up
-    | Right
-    | Down
-    | Left
-
-
-manhattanSteps : Int -> List Direction
-manhattanSteps position =
-    []
-
-
 manhattan : Int -> Int
 manhattan position =
     let
