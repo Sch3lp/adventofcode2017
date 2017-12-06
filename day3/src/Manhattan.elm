@@ -28,11 +28,15 @@ stepsAwayFromMiddle position zone =
         distanceToMiddle =
             distance (middleOfASide zone) (sideLength zone)
 
+        --            3                    5 = 2
         distanceFromCorner =
             distanceFromClosestCorner zone position
 
+        -- 1 --> must be 2
         stepsToMiddle =
             distance distanceToMiddle distanceFromCorner
+
+        --           2                 1
     in
         if isOnACorner zone position then
             distanceToMiddle

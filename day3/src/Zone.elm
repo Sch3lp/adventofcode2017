@@ -69,6 +69,7 @@ correctionForCloserToPreviousZone zone =
         (\( theClosestCorner, dist ) ->
             if (theClosestCorner == (previousZone zone).corner) then
                 ( zone.corner, 1 )
+                -- this is a bug, see failing test
             else
                 ( theClosestCorner, dist )
         )
