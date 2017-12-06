@@ -68,7 +68,7 @@ correctionForCloserToPreviousZone zone =
     Maybe.map
         (\( theClosestCorner, dist ) ->
             if (theClosestCorner == (previousZone zone).corner) then
-                ( zone.corner, 1 )
+                ( zone.corner, dist )
                 -- this is a bug, see failing test
             else
                 ( theClosestCorner, dist )
@@ -102,6 +102,11 @@ nextZone zone =
 previousZone : Zone -> Zone
 previousZone zone =
     advanceZone Inwards zone
+
+
+distanceToMiddleFor : Zone -> Int
+distanceToMiddleFor zone =
+    distance (middleOfASide zone) (sideLength zone)
 
 
 type Sense

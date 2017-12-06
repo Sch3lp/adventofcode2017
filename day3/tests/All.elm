@@ -140,23 +140,26 @@ suite =
                         manhattanSteps 23
                             |> Expect.equal [ Up, Up ]
                 ]
-        , skip <|
-            describe "manhattan"
-                [ test "for 1 is 0 steps" <|
-                    \_ ->
-                        manhattan 1
-                            |> Expect.equal 0
-                , test "for 12 is 3 steps" <|
-                    \_ ->
-                        manhattan 12
-                            |> Expect.equal 3
-                , test "for 23 is 2 steps" <|
-                    \_ ->
-                        manhattan 23
-                            |> Expect.equal 2
-                , test "for 1024 is 31 steps" <|
-                    \_ ->
-                        manhattan 1024
-                            |> Expect.equal 31
-                ]
+        , describe "manhattan"
+            [ test "for 1 is 0 steps" <|
+                \_ ->
+                    manhattan 1
+                        |> Expect.equal 0
+            , test "for 12 is 3 steps" <|
+                \_ ->
+                    manhattan 12
+                        |> Expect.equal 3
+            , test "for 23 is 2 steps" <|
+                \_ ->
+                    manhattan 23
+                        |> Expect.equal 2
+            , test "for 1024 is 31 steps" <|
+                \_ ->
+                    manhattan 1024
+                        |> Expect.equal 31
+            , test "for 361527 is 31 steps" <|
+                \_ ->
+                    manhattan 361527
+                        |> Expect.equal 1
+            ]
         ]

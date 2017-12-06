@@ -11,32 +11,31 @@ type Direction
     | Left
 
 
-manhattan : Int -> Int
-manhattan position =
-    manhattanSteps position
-        |> List.length
-
-
 manhattanSteps : Int -> List Direction
 manhattanSteps position =
     []
+
+
+manhattan : Int -> Int
+manhattan position =
+    let
+        zone =
+            findZone position
+    in
+        (stepsAwayFromMiddle position zone) + (stepsToAccessPort zone)
 
 
 stepsAwayFromMiddle : Int -> Zone -> Int
 stepsAwayFromMiddle position zone =
     let
         distanceToMiddle =
-            distance (middleOfASide zone) (sideLength zone)
+            distanceToMiddleFor zone
 
-        --            3                    5 = 2
         distanceFromCorner =
             distanceFromClosestCorner zone position
 
-        -- 1 --> must be 2
         stepsToMiddle =
             distance distanceToMiddle distanceFromCorner
-
-        --           2                 1
     in
         if isOnACorner zone position then
             distanceToMiddle
@@ -46,7 +45,7 @@ stepsAwayFromMiddle position zone =
 
 stepsToAccessPort : Zone -> Int
 stepsToAccessPort zone =
-    0
+    distanceToMiddleFor zone
 
 
 findZone : Int -> Zone

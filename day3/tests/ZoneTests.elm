@@ -123,4 +123,11 @@ suite =
                         |> Expect.equal
                             25
             ]
+        , describe "correctionForCloserToPreviousZone"
+            [ test "10 in Zone 25 is closest to 25, but 9 is just as much distance away as 25" <|
+                \_ ->
+                    correctionForCloserToPreviousZone (Zone 25) (Maybe.Just ( 9, 1 ))
+                        |> Expect.equal
+                            (Maybe.Just ( 25, 1 ))
+            ]
         ]
