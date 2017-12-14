@@ -12,10 +12,10 @@ suite =
         [ describe "spiral"
             [ test "2 times" <|
                 \_ ->
-                    createSpiral ( 1, 1 ) (Some 2)
+                    createSpiral ( 0, 0 ) (Some 2)
                         |> Expect.equal
                             (Dict.fromList
-                                [ ( ( 1, 1 ), 1 ), ( ( 2, 1 ), 1 ) ]
+                                [ ( ( 0, 0 ), 1 ), ( ( 1, 0 ), 1 ) ]
                             )
             ]
         ]

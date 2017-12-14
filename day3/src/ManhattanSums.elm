@@ -5,6 +5,10 @@
 -- 97951     351      11      23      25      26    4477
 -- 98664     362     747     806     880    1760    2691 436638
 -- 99026  198052  199967  202400  205846  211177  215628 218319
+-- points
+-- (-1,1)   (0,1)   (1,1)
+-- (-1,0)   (0,0)   (1,0)
+-- (-1,-1)  (-1,0)  (1,-1)
 
 
 module ManhattanSums exposing (..)
@@ -27,7 +31,7 @@ type Times
 
 accessPort : Point
 accessPort =
-    ( 1, 1 )
+    ( 0, 0 )
 
 
 createSpiral : Point -> Times -> Spiral
@@ -50,7 +54,20 @@ expandSpiral acc spiral =
             amount =
                 acc - 1
 
+            point =
+                determinePoint acc
+
             newSpiral =
-                Dict.insert ( 2, 1 ) 1 spiral
+                Dict.insert point 1 spiral
         in
             expandSpiral amount newSpiral
+
+
+
+-- Manhattan/Zone would be useful if it'd been able to determine the quadrant the position is in
+-- relative to the access port (0,0), or 1 in the previous exercise
+
+
+determinePoint : Int -> Point
+determinePoint position =
+    ( 0, 0 )
