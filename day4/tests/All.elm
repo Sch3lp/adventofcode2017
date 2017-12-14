@@ -19,40 +19,77 @@ suite =
                         |> Expect.equal
                             [ [ "aa", "bb", "cc", "dd" ], [ "aa", "bb", "cc", "aa" ] ]
             ]
-        , describe "isValid"
+        , describe "hasNoAnagrams"
+            [ skip <|
+                test "abcde fghij => True" <|
+                    \_ ->
+                        [ "abcde", "fghij" ]
+                            |> hasNoAnagrams
+                            |> Expect.equal
+                                True
+            , test "abcde xyz ecdab => False" <|
+                \_ ->
+                    [ "abcde", "xyz", "ecdab" ]
+                        |> hasNoAnagrams
+                        |> Expect.equal
+                            False
+            , skip <|
+                test "a ab abc abd abf abj => True" <|
+                    \_ ->
+                        [ "a", "ab", "abc", "abd", "abf", "abj" ]
+                            |> hasNoAnagrams
+                            |> Expect.equal
+                                True
+            , skip <|
+                test "iiii oiii ooii oooi oooo => True" <|
+                    \_ ->
+                        [ "iiii", "oiii", "ooii", "oooi", "oooo" ]
+                            |> hasNoAnagrams
+                            |> Expect.equal
+                                True
+            , skip <|
+                test "oiii ioii iioi iiio => False" <|
+                    \_ ->
+                        [ "oiii", "ioii", "iioi", "iiio" ]
+                            |> hasNoAnagrams
+                            |> Expect.equal
+                                False
+            ]
+        , describe "hasUniqueWords"
             [ test "aa bb cc dd => True" <|
                 \_ ->
                     [ "aa", "bb", "cc", "dd" ]
-                        |> isValid
+                        |> hasUniqueWords
                         |> Expect.equal
                             True
             , test "aa bb cc aa => False" <|
                 \_ ->
                     [ "aa", "bb", "cc", "aa" ]
-                        |> isValid
+                        |> hasUniqueWords
                         |> Expect.equal
                             False
             ]
-        , describe "numberOfValidPassphrases"
-            [ test "aa bb cc dd => 1" <|
-                \_ ->
-                    """
+        , skip <|
+            describe "numberOfValidPassphrases using unique"
+                [ test "aa bb cc dd => 1" <|
+                    \_ ->
+                        """
                     aa bb cc dd
                     """
-                        |> numberOfValidPassphrases
-                        |> Expect.equal
-                            1
-            , test "aa bb cc aa => 0" <|
-                \_ ->
-                    """
+                            |> numberOfValidPassphrases
+                            |> Expect.equal
+                                1
+                , test "aa bb cc aa => 0" <|
+                    \_ ->
+                        """
                     aa bb cc aa
                     """
-                        |> numberOfValidPassphrases
-                        |> Expect.equal
-                            0
-            , test "2 invalid in 6 valid passphrase lines => 4" <|
-                \_ ->
-                    """
+                            |> numberOfValidPassphrases
+                            |> Expect.equal
+                                0
+                , test "2 invalid in 6 valid passphrase lines => 4" <|
+                    \_ ->
+                        """
                     aa bb cc dd
                     aa bb cc aa
                     aa bb cc dd
@@ -60,14 +97,15 @@ suite =
                     aa bb cc dd
                     aa bb cc dd
                     """
-                        |> numberOfValidPassphrases
-                        |> Expect.equal
-                            4
-            ]
-        , describe "puzzle"
-            [ test "input" <|
-                \_ ->
-                    """
+                            |> numberOfValidPassphrases
+                            |> Expect.equal
+                                4
+                ]
+        , skip <|
+            describe "puzzle"
+                [ test "input" <|
+                    \_ ->
+                        """
                     bdwdjjo avricm cjbmj ran lmfsom ivsof
                     mxonybc fndyzzi gmdp gdfyoi inrvhr kpuueel wdpga vkq
                     bneh ylltsc vhryov lsd hmruxy ebnh pdln vdprrky
@@ -581,8 +619,8 @@ suite =
                     hwcy ujdun bjjuvd jbdvju onnk xeyy mmp onkn qyzl
                     jwfm ptjwrbl hhuv uolz adyweh qpj wxyogp igvnojq jmfw pqs fsnirby
                     """
-                        |> numberOfValidPassphrases
-                        |> Expect.equal
-                            2
-            ]
+                            |> numberOfValidPassphrases
+                            |> Expect.equal
+                                2
+                ]
         ]

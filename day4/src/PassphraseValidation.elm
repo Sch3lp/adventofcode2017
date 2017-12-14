@@ -10,7 +10,7 @@ type alias Passphrase =
 numberOfValidPassphrases : String -> Int
 numberOfValidPassphrases input =
     splitIntoPassphrases input
-        |> List.filter isValid
+        |> List.filter hasUniqueWords
         |> List.length
 
 
@@ -22,8 +22,20 @@ splitIntoPassphrases input =
         |> List.map String.words
 
 
-isValid : Passphrase -> Bool
-isValid passphrase =
+hasNoAnagrams : Passphrase -> Bool
+hasNoAnagrams passphrase =
+    let
+        reversed =
+            List.map String.reverse passphrase
+
+        -- this is not a good solution, because when the letters of a word can be rearranged (in any order), then it's considered an anagram
+    in
+        not <|
+            List.any (\word -> List.member word reversed) passphrase
+
+
+hasUniqueWords : Passphrase -> Bool
+hasUniqueWords passphrase =
     let
         uniqueWords =
             Set.fromList passphrase
