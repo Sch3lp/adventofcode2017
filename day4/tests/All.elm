@@ -17,19 +17,21 @@ suite =
                     """
                         |> splitIntoPassphrases
                         |> Expect.equal
-                            [ [ "aa", "bb", "cc", "dd" ], [ "aa", "bb", "cc", "aa" ] ]
+                            [ [ "aa", "bb", "cc", "dd" ] |> List.map Word, [ "aa", "bb", "cc", "aa" ] |> List.map Word ]
             ]
         , describe "hasNoAnagrams"
             [ skip <|
                 test "abcde fghij => True" <|
                     \_ ->
                         [ "abcde", "fghij" ]
+                            |> List.map Word
                             |> hasNoAnagrams
                             |> Expect.equal
                                 True
             , test "abcde xyz ecdab => False" <|
                 \_ ->
                     [ "abcde", "xyz", "ecdab" ]
+                        |> List.map Word
                         |> hasNoAnagrams
                         |> Expect.equal
                             False
@@ -37,6 +39,7 @@ suite =
                 test "a ab abc abd abf abj => True" <|
                     \_ ->
                         [ "a", "ab", "abc", "abd", "abf", "abj" ]
+                            |> List.map Word
                             |> hasNoAnagrams
                             |> Expect.equal
                                 True
@@ -44,6 +47,7 @@ suite =
                 test "iiii oiii ooii oooi oooo => True" <|
                     \_ ->
                         [ "iiii", "oiii", "ooii", "oooi", "oooo" ]
+                            |> List.map Word
                             |> hasNoAnagrams
                             |> Expect.equal
                                 True
@@ -51,6 +55,7 @@ suite =
                 test "oiii ioii iioi iiio => False" <|
                     \_ ->
                         [ "oiii", "ioii", "iioi", "iiio" ]
+                            |> List.map Word
                             |> hasNoAnagrams
                             |> Expect.equal
                                 False
@@ -59,12 +64,14 @@ suite =
             [ test "aa bb cc dd => True" <|
                 \_ ->
                     [ "aa", "bb", "cc", "dd" ]
+                        |> List.map Word
                         |> hasUniqueWords
                         |> Expect.equal
                             True
             , test "aa bb cc aa => False" <|
                 \_ ->
                     [ "aa", "bb", "cc", "aa" ]
+                        |> List.map Word
                         |> hasUniqueWords
                         |> Expect.equal
                             False

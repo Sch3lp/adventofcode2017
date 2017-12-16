@@ -1,10 +1,15 @@
 module PassphraseValidation exposing (..)
 
 import Set exposing (..)
+import Regex exposing (..)
 
 
 type alias Passphrase =
-    List String
+    List Word
+
+
+type alias Word =
+    { word : String }
 
 
 numberOfValidPassphrases : String -> Int
@@ -16,28 +21,35 @@ numberOfValidPassphrases input =
 
 splitIntoPassphrases : String -> List Passphrase
 splitIntoPassphrases input =
-    String.lines input
+    input
+        |> String.lines
         |> List.map String.trim
         |> List.filter (not << String.isEmpty)
         |> List.map String.words
+        |> List.map (\words -> List.map Word words)
 
 
 hasNoAnagrams : Passphrase -> Bool
 hasNoAnagrams passphrase =
-    let
-        reversed =
-            List.map String.reverse passphrase
+    False
 
-        -- this is not a good solution, because when the letters of a word can be rearranged (in any order), then it's considered an anagram
-    in
-        not <|
-            List.any (\word -> List.member word reversed) passphrase
+
+toLetters : Word -> List String
+toLetters { word } =
+    Regex.split All (regex "") word
+
+
+containsAll : List a -> List a -> Bool
+containsAll list1 list2 =
+    List.all (\li -> List.member li list2) list1
 
 
 hasUniqueWords : Passphrase -> Bool
 hasUniqueWords passphrase =
     let
         uniqueWords =
-            Set.fromList passphrase
+            passphrase
+                |> List.map .word
+                |> Set.fromList
     in
         List.length passphrase == Set.size uniqueWords
