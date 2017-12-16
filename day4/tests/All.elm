@@ -19,15 +19,58 @@ suite =
                         |> Expect.equal
                             [ [ "aa", "bb", "cc", "dd" ] |> List.map Word, [ "aa", "bb", "cc", "aa" ] |> List.map Word ]
             ]
+        , describe "isAnagramOf"
+            [ test "a is not an anagram of ab" <|
+                \_ ->
+                    isAnagramOf (Word "a") (Word "ab")
+                        |> Expect.equal False
+            , test "iiii is not an anagram of oiii" <|
+                \_ ->
+                    isAnagramOf (Word "iiii") (Word "oiii")
+                        |> Expect.equal False
+            , test "abcd is an anagram of dcba" <|
+                \_ ->
+                    isAnagramOf (Word "abcd") (Word "dcba")
+                        |> Expect.equal True
+            , test "abcd is not an anagram of dcb" <|
+                \_ ->
+                    isAnagramOf (Word "abcd") (Word "dcb")
+                        |> Expect.equal False
+            , test "abcd is not an anagram of dcbk" <|
+                \_ ->
+                    isAnagramOf (Word "abcd") (Word "dcbk")
+                        |> Expect.equal False
+            , test "watermelon is an anagram of melonwater" <|
+                \_ ->
+                    isAnagramOf (Word "watermelon") (Word "melonwater")
+                        |> Expect.equal True
+            ]
+        , describe "hasAnagramIn"
+            [ test "abcd has an anagram in dcba, ffuuu" <|
+                \_ ->
+                    hasAnagramIn (Word "abcd") (List.map Word [ "dcba", "ffuuu" ])
+                        |> Expect.equal True
+            , test "abcd has no an anagram in dcb, aabb" <|
+                \_ ->
+                    hasAnagramIn (Word "abcd") (List.map Word [ "dcb", "aabb" ])
+                        |> Expect.equal False
+            , test "abcd has an anagram in abcd, poop" <|
+                \_ ->
+                    hasAnagramIn (Word "abcd") (List.map Word [ "abcd", "poop" ])
+                        |> Expect.equal True
+            , test "watermelon has an anagram in melonwater, monkeypoop" <|
+                \_ ->
+                    hasAnagramIn (Word "watermelon") (List.map Word [ "melonwater", "monkeypoop" ])
+                        |> Expect.equal True
+            ]
         , describe "hasNoAnagrams"
-            [ skip <|
-                test "abcde fghij => True" <|
-                    \_ ->
-                        [ "abcde", "fghij" ]
-                            |> List.map Word
-                            |> hasNoAnagrams
-                            |> Expect.equal
-                                True
+            [ test "abcde fghij => True" <|
+                \_ ->
+                    [ "abcde", "fghij" ]
+                        |> List.map Word
+                        |> hasNoAnagrams
+                        |> Expect.equal
+                            True
             , test "abcde xyz ecdab => False" <|
                 \_ ->
                     [ "abcde", "xyz", "ecdab" ]
@@ -35,30 +78,27 @@ suite =
                         |> hasNoAnagrams
                         |> Expect.equal
                             False
-            , skip <|
-                test "a ab abc abd abf abj => True" <|
-                    \_ ->
-                        [ "a", "ab", "abc", "abd", "abf", "abj" ]
-                            |> List.map Word
-                            |> hasNoAnagrams
-                            |> Expect.equal
-                                True
-            , skip <|
-                test "iiii oiii ooii oooi oooo => True" <|
-                    \_ ->
-                        [ "iiii", "oiii", "ooii", "oooi", "oooo" ]
-                            |> List.map Word
-                            |> hasNoAnagrams
-                            |> Expect.equal
-                                True
-            , skip <|
-                test "oiii ioii iioi iiio => False" <|
-                    \_ ->
-                        [ "oiii", "ioii", "iioi", "iiio" ]
-                            |> List.map Word
-                            |> hasNoAnagrams
-                            |> Expect.equal
-                                False
+            , test "a ab abc abd abf abj => True" <|
+                \_ ->
+                    [ "a", "ab", "abc", "abd", "abf", "abj" ]
+                        |> List.map Word
+                        |> hasNoAnagrams
+                        |> Expect.equal
+                            True
+            , test "iiii oiii ooii oooi oooo => True" <|
+                \_ ->
+                    [ "iiii", "oiii", "ooii", "oooi", "oooo" ]
+                        |> List.map Word
+                        |> hasNoAnagrams
+                        |> Expect.equal
+                            True
+            , test "oiii ioii iioi iiio => False" <|
+                \_ ->
+                    [ "oiii", "ioii", "iioi", "iiio" ]
+                        |> List.map Word
+                        |> hasNoAnagrams
+                        |> Expect.equal
+                            False
             ]
         , describe "hasUniqueWords"
             [ test "aa bb cc dd => True" <|
@@ -76,27 +116,26 @@ suite =
                         |> Expect.equal
                             False
             ]
-        , skip <|
-            describe "numberOfValidPassphrases using unique"
-                [ test "aa bb cc dd => 1" <|
-                    \_ ->
-                        """
+        , describe "numberOfValidPassphrases using uniqueWords"
+            [ test "aa bb cc dd => 1" <|
+                \_ ->
+                    """
                     aa bb cc dd
                     """
-                            |> numberOfValidPassphrases
-                            |> Expect.equal
-                                1
-                , test "aa bb cc aa => 0" <|
-                    \_ ->
-                        """
+                        |> numberOfValidPassphrases hasUniqueWords
+                        |> Expect.equal
+                            1
+            , test "aa bb cc aa => 0" <|
+                \_ ->
+                    """
                     aa bb cc aa
                     """
-                            |> numberOfValidPassphrases
-                            |> Expect.equal
-                                0
-                , test "2 invalid in 6 valid passphrase lines => 4" <|
-                    \_ ->
-                        """
+                        |> numberOfValidPassphrases hasUniqueWords
+                        |> Expect.equal
+                            0
+            , test "2 invalid in 6 valid passphrase lines => 4" <|
+                \_ ->
+                    """
                     aa bb cc dd
                     aa bb cc aa
                     aa bb cc dd
@@ -104,15 +143,14 @@ suite =
                     aa bb cc dd
                     aa bb cc dd
                     """
-                            |> numberOfValidPassphrases
-                            |> Expect.equal
-                                4
-                ]
-        , skip <|
-            describe "puzzle"
-                [ test "input" <|
-                    \_ ->
-                        """
+                        |> numberOfValidPassphrases hasUniqueWords
+                        |> Expect.equal
+                            4
+            ]
+        , describe "puzzle"
+            [ test "input" <|
+                \_ ->
+                    """
                     bdwdjjo avricm cjbmj ran lmfsom ivsof
                     mxonybc fndyzzi gmdp gdfyoi inrvhr kpuueel wdpga vkq
                     bneh ylltsc vhryov lsd hmruxy ebnh pdln vdprrky
@@ -626,8 +664,8 @@ suite =
                     hwcy ujdun bjjuvd jbdvju onnk xeyy mmp onkn qyzl
                     jwfm ptjwrbl hhuv uolz adyweh qpj wxyogp igvnojq jmfw pqs fsnirby
                     """
-                            |> numberOfValidPassphrases
-                            |> Expect.equal
-                                2
-                ]
+                        |> numberOfValidPassphrases hasNoAnagrams
+                        |> Expect.equal
+                            2
+            ]
         ]

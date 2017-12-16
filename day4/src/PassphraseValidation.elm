@@ -2,6 +2,7 @@ module PassphraseValidation exposing (..)
 
 import Set exposing (..)
 import Regex exposing (..)
+import List.Extra exposing (..)
 
 
 type alias Passphrase =
@@ -12,10 +13,10 @@ type alias Word =
     { word : String }
 
 
-numberOfValidPassphrases : String -> Int
-numberOfValidPassphrases input =
+numberOfValidPassphrases : (Passphrase -> Bool) -> String -> Int
+numberOfValidPassphrases validatorFn input =
     splitIntoPassphrases input
-        |> List.filter hasUniqueWords
+        |> List.filter validatorFn
         |> List.length
 
 
@@ -31,7 +32,37 @@ splitIntoPassphrases input =
 
 hasNoAnagrams : Passphrase -> Bool
 hasNoAnagrams passphrase =
-    False
+    not <| hasAnagrams passphrase
+
+
+hasAnagrams : Passphrase -> Bool
+hasAnagrams passphrase =
+    case passphrase of
+        [] ->
+            False
+
+        one :: [] ->
+            False
+
+        h :: t ->
+            hasAnagramIn h t || hasAnagrams t
+
+
+hasAnagramIn : Word -> Passphrase -> Bool
+hasAnagramIn word passphrase =
+    List.any (isAnagramOf word) passphrase
+
+
+isAnagramOf : Word -> Word -> Bool
+isAnagramOf w1 w2 =
+    let
+        word1 =
+            toLetters w1
+
+        word2 =
+            toLetters w2
+    in
+        containsAll word1 word2
 
 
 toLetters : Word -> List String
@@ -39,9 +70,22 @@ toLetters { word } =
     Regex.split All (regex "") word
 
 
-containsAll : List a -> List a -> Bool
+containsAll : List comparable -> List comparable -> Bool
 containsAll list1 list2 =
-    List.all (\li -> List.member li list2) list1
+    if List.length list1 /= List.length list2 then
+        False
+    else
+        let
+            sorted1 =
+                List.sort list1
+
+            sorted2 =
+                List.sort list2
+
+            zipped =
+                List.Extra.zip sorted1 sorted2
+        in
+            List.all (\( fst, snd ) -> fst == snd) zipped
 
 
 hasUniqueWords : Passphrase -> Bool
