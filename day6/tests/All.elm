@@ -7,13 +7,14 @@ import MemoryBanks exposing (..)
 
 solveTest : Test
 solveTest =
-    describe "solve"
-        [ test "given puzzle input" <|
-            \_ ->
-                banksFrom [ 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6 ]
-                    |> solve
-                    |> Expect.equal (Redistributions 1)
-        ]
+    skip <|
+        describe "solve"
+            [ test "given puzzle input" <|
+                \_ ->
+                    banksFrom [ 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6 ]
+                        |> solve
+                        |> Expect.equal (Redistributions 1)
+            ]
 
 
 bankWithMostBlocksTest : Test
@@ -23,17 +24,17 @@ bankWithMostBlocksTest =
             \_ ->
                 banksFrom [ 0, 5, 2, 9, 1 ]
                     |> bankWithMostBlocks
-                    |> Expect.equal (Bank 3 9)
-        , test "[0,9,2,9,1] => Bank at index 1 with 9" <|
+                    |> Expect.equal ( 3, 9 )
+        , test "[0,9,2,9,1,9] => Bank at index 1 with 9, ties won by bank with lowest index" <|
             \_ ->
-                banksFrom [ 0, 5, 2, 9, 1 ]
+                banksFrom [ 0, 9, 2, 9, 1, 9 ]
                     |> bankWithMostBlocks
-                    |> Expect.equal (Bank 1 9)
+                    |> Expect.equal ( 1, 9 )
         , test "[0,0] => Bank at index 0 with 0" <|
             \_ ->
                 banksFrom [ 0, 0 ]
                     |> bankWithMostBlocks
-                    |> Expect.equal (Bank 0 0)
+                    |> Expect.equal ( 0, 0 )
         ]
 
 
