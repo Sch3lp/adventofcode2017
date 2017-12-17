@@ -1,6 +1,6 @@
 module Trampolines exposing (..)
 
-import List.Extra exposing (..)
+import Array exposing (..)
 
 
 type alias Offset =
@@ -14,7 +14,7 @@ type Instruction
 
 
 type alias Instructions =
-    List Instruction
+    Array Instruction
 
 
 type alias Steps =
@@ -69,7 +69,7 @@ stepsToExit instructions =
 
 instructionAt : Path -> Int -> Maybe Instruction
 instructionAt path idx =
-    List.Extra.getAt idx path.instructions
+    Array.get idx path.instructions
 
 
 applyInstructionHelper : Maybe Instruction -> Path -> Path
@@ -92,7 +92,7 @@ applyInstruction instruction path =
             advanceInstructionAtPosition path.position instruction path.instructions
 
         exitIdx =
-            (List.length path.instructions)
+            (Array.length path.instructions)
 
         newPosition =
             advancePosition path.position instruction exitIdx
@@ -113,16 +113,16 @@ advanceInstructionAtPosition pos instruction instructions =
         Index idx ->
             case instruction of
                 Forwards offset ->
-                    List.Extra.setAt idx (Forwards (forwardOffset offset)) instructions
+                    Array.set idx (Forwards (forwardOffset offset)) instructions
 
                 Remain ->
-                    List.Extra.setAt idx (Forwards 1) instructions
+                    Array.set idx (Forwards 1) instructions
 
                 Backwards offset ->
                     if offset == 1 then
-                        List.Extra.setAt idx (Remain) instructions
+                        Array.set idx (Remain) instructions
                     else
-                        List.Extra.setAt idx (Backwards (offset - 1)) instructions
+                        Array.set idx (Backwards (offset - 1)) instructions
 
 
 forwardOffset : Offset -> Offset
@@ -193,3 +193,4 @@ toInstructions input =
         |> List.map String.toInt
         |> List.filterMap Result.toMaybe
         |> List.map toInstruction
+        |> Array.fromList
