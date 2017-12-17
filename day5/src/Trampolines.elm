@@ -15,7 +15,26 @@ type alias Instructions =
     List Instruction
 
 
-type alias Movement =
+type alias Steps =
+    { steps : Int }
+
+
+type alias Position =
+    { pos : Int }
+
+
+type alias Path =
     { instructions : Instructions
-    , stepsTaken : Int
+    , position : Position
+    , stepsTaken : Steps
     }
+
+
+stepsToExit : Instructions -> Int
+stepsToExit instructions =
+    0
+
+
+applyInstruction : Instruction -> Path -> Path
+applyInstruction instr path =
+    path
