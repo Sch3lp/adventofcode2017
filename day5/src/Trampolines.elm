@@ -17,12 +17,17 @@ type alias Instructions =
     Array Instruction
 
 
-type alias Steps =
-    { steps : Int }
+type Steps
+    = Steps Int
+
+
+stepsAsInt : Steps -> Int
+stepsAsInt (Steps steps) =
+    steps
 
 
 increaseStepsTaken : Steps -> Steps
-increaseStepsTaken { steps } =
+increaseStepsTaken (Steps steps) =
     Steps (steps + 1)
 
 
@@ -54,7 +59,7 @@ stepsToExit instructions =
         initialPath
             |> applyInstructions
             |> .stepsTaken
-            |> .steps
+            |> stepsAsInt
 
 
 applyInstructions : Path -> Path

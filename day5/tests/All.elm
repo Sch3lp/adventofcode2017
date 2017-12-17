@@ -6,15 +6,6 @@ import Trampolines exposing (..)
 import Array exposing (..)
 
 
-suite : Test
-suite =
-    describe "Trampolines"
-        [ instructionTests
-        , parseTests
-        , solveTest
-        ]
-
-
 parseTests : Test
 parseTests =
     describe "parsing"
@@ -138,10 +129,11 @@ stepsToExitTests =
 
 solveTest : Test
 solveTest =
-    describe "solve"
-        [ test "given puzzle input" <|
-            \_ ->
-                solve """
+    skip <|
+        describe "solve"
+            [ test "given puzzle input" <|
+                \_ ->
+                    solve """
 2
 0
 -1
@@ -1240,5 +1232,5 @@ solveTest =
 -567
 -889
                 """
-                    |> Expect.equal 1
-        ]
+                        |> Expect.equal 1
+            ]
