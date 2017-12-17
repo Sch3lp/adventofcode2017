@@ -23,12 +23,13 @@ instructionTests =
 applyInstructionTests : Test
 applyInstructionTests =
     describe "applyInstruction"
-        [ test "Forwards 1: increases steps with 1, increases Offset with 1, jumps forwards 1 position" <|
-            \_ ->
-                Path [ Forwards 1, Remain, Remain ] (Index 0) (Steps 0)
-                    |> applyInstruction (Forwards 1)
-                    |> Expect.equal
-                        (Path [ Forwards 2, Remain ] (Index 1) (Steps 1))
+        [ only <|
+            test "Forwards 1: increases steps with 1, increases Offset with 1, jumps forwards 1 position" <|
+                \_ ->
+                    Path [ Forwards 1, Remain, Remain ] (Index 0) (Steps 0)
+                        |> applyInstruction (Forwards 1)
+                        |> Expect.equal
+                            (Path [ Forwards 2, Remain, Remain ] (Index 1) (Steps 1))
         , test "Forwards 2: increases steps with 1, increases Offset with 1, jumps forwards 2 positions" <|
             \_ ->
                 Path [ Forwards 1, Remain, Remain ] (Index 0) (Steps 0)
