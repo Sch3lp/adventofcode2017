@@ -49,24 +49,24 @@ applyInstruction instruction path =
         increasedSteps =
             increaseStepsTaken path.stepsTaken
 
-        updatedInstructions =
-            updateInstructions path.position instruction path.instructions
+        newInstructions =
+            advanceInstructionAtPosition path.position instruction path.instructions
 
         exitIdx =
-            (List.length path.instructions) + 1
+            (List.length path.instructions)
 
         newPosition =
-            updatePosition path.position instruction exitIdx
+            advancePosition path.position instruction exitIdx
     in
         { path
-            | instructions = updatedInstructions
+            | instructions = newInstructions
             , position = newPosition
             , stepsTaken = increasedSteps
         }
 
 
-updateInstructions : Position -> Instruction -> Instructions -> Instructions
-updateInstructions pos instruction instructions =
+advanceInstructionAtPosition : Position -> Instruction -> Instructions -> Instructions
+advanceInstructionAtPosition pos instruction instructions =
     case pos of
         Exit ->
             instructions
@@ -79,12 +79,15 @@ updateInstructions pos instruction instructions =
                 Remain ->
                     List.Extra.setAt idx (Forwards 1) instructions
 
-                _ ->
-                    instructions
+                Backwards offset ->
+                    if offset == 1 then
+                        List.Extra.setAt idx (Remain) instructions
+                    else
+                        List.Extra.setAt idx (Backwards (offset - 1)) instructions
 
 
-updatePosition : Position -> Instruction -> Int -> Position
-updatePosition position instruction exitIdx =
+advancePosition : Position -> Instruction -> Int -> Position
+advancePosition position instruction exitIdx =
     case position of
         Exit ->
             Exit
@@ -97,8 +100,8 @@ updatePosition position instruction exitIdx =
                 Remain ->
                     position
 
-                _ ->
-                    position
+                Backwards offset ->
+                    backwards idx offset
 
 
 forwards : Int -> Offset -> Int -> Position
@@ -109,5 +112,17 @@ forwards idx offset exitIdx =
     in
         if newIdx >= exitIdx then
             Exit
+        else
+            Index newIdx
+
+
+backwards : Int -> Offset -> Position
+backwards idx offset =
+    let
+        newIdx =
+            idx - offset
+    in
+        if newIdx < 0 then
+            Index 0
         else
             Index newIdx

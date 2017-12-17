@@ -46,19 +46,25 @@ applyInstructionTests =
                 Path [ Remain, Forwards 2, Backwards 1 ] (Index 2) (Steps 0)
                     |> applyInstruction (Backwards 1)
                     |> Expect.equal
-                        (Path [ Forwards 1, Forwards 2, Remain ] (Index 1) (Steps 1))
+                        (Path [ Remain, Forwards 2, Remain ] (Index 1) (Steps 1))
         , test "Backwards 2: increases steps with 1, decreases Offset with 1, jumps backwards 2 positions" <|
             \_ ->
                 Path [ Remain, Forwards 2, Backwards 2 ] (Index 2) (Steps 0)
                     |> applyInstruction (Backwards 2)
                     |> Expect.equal
-                        (Path [ Forwards 1, Forwards 2, Backwards 1 ] (Index 0) (Steps 1))
-        , test "Forwards with an Offset higher than the total of Instructions: increases steps with 1, increases Offset with 1, jumps to Exit" <|
+                        (Path [ Remain, Forwards 2, Backwards 1 ] (Index 0) (Steps 1))
+        , test "Backwards with a resulting index below 0: increases steps with 1, decreases Offset with 1, jumps to starting position" <|
+            \_ ->
+                Path [ Remain, Forwards 2, Backwards 4 ] (Index 2) (Steps 0)
+                    |> applyInstruction (Backwards 4)
+                    |> Expect.equal
+                        (Path [ Remain, Forwards 2, Backwards 3 ] (Index 0) (Steps 1))
+        , test "Forwards with a resulting index higher than the total of Instructions: increases steps with 1, increases Offset with 1, jumps to Exit" <|
             \_ ->
                 Path [ Remain, Forwards 2, Backwards 2 ] (Index 1) (Steps 0)
                     |> applyInstruction (Forwards 2)
                     |> Expect.equal
-                        (Path [ Forwards 1, Forwards 3, Backwards 1 ] (Exit) (Steps 1))
+                        (Path [ Remain, Forwards 3, Backwards 2 ] (Exit) (Steps 1))
         ]
 
 
