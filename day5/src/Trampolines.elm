@@ -40,7 +40,39 @@ type alias Path =
 
 stepsToExit : Instructions -> Int
 stepsToExit instructions =
-    0
+    let
+        initialPath =
+            Path instructions (Index 0) (Steps 0)
+
+        applyInstructions : Path -> Path
+        applyInstructions =
+            \path ->
+                case path.position of
+                    Exit ->
+                        path
+
+                    Index idx ->
+                        applyInstructions <| applyInstructionHelper (instructionAt path idx) path
+    in
+        initialPath
+            |> applyInstructions
+            |> .stepsTaken
+            |> .steps
+
+
+instructionAt : Path -> Int -> Maybe Instruction
+instructionAt path idx =
+    List.Extra.getAt idx path.instructions
+
+
+applyInstructionHelper : Maybe Instruction -> Path -> Path
+applyInstructionHelper instruction path =
+    case instruction of
+        Just instr ->
+            applyInstruction instr path
+
+        Nothing ->
+            path
 
 
 applyInstruction : Instruction -> Path -> Path
