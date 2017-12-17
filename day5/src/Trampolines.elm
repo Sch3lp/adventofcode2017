@@ -19,8 +19,9 @@ type alias Steps =
     { steps : Int }
 
 
-type alias Position =
-    { pos : Int }
+type Position
+    = Index Int
+    | Exit
 
 
 type alias Path =
