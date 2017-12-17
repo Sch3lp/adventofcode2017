@@ -26,9 +26,13 @@ increaseStepsTaken { steps } =
     Steps (steps + 1)
 
 
-type Position
-    = Index Int
-    | Exit
+type alias Position =
+    Int
+
+
+
+-- type Position    = Index Int
+--     | Exit
 
 
 type alias Path =
@@ -49,22 +53,24 @@ stepsToExit : Instructions -> Int
 stepsToExit instructions =
     let
         initialPath =
-            Path instructions (Index 0) (Steps 0)
-
-        applyInstructions : Path -> Path
-        applyInstructions =
-            \path ->
-                case path.position of
-                    Exit ->
-                        path
-
-                    Index idx ->
-                        applyInstructions <| applyInstructionHelper (instructionAt path idx) path
+            Path instructions (0) (Steps 0)
     in
         initialPath
             |> applyInstructions
             |> .stepsTaken
             |> .steps
+
+
+applyInstructions : Path -> Path
+applyInstructions { instructions, position, stepsTaken } =
+    let
+        path =
+            { instructions = instructions, position = position, stepsTaken = stepsTaken }
+    in
+        if position >= List.length instructions then
+            path
+        else
+            applyInstructions <| applyInstructionHelper (instructionAt path position) path
 
 
 instructionAt : Path -> Int -> Maybe Instruction
@@ -106,23 +112,18 @@ applyInstruction instruction path =
 
 advanceInstructionAtPosition : Position -> Instruction -> Instructions -> Instructions
 advanceInstructionAtPosition pos instruction instructions =
-    case pos of
-        Exit ->
-            instructions
+    case instruction of
+        Forwards offset ->
+            List.Extra.setAt pos (Forwards (forwardOffset offset)) instructions
 
-        Index idx ->
-            case instruction of
-                Forwards offset ->
-                    List.Extra.setAt idx (Forwards (forwardOffset offset)) instructions
+        Remain ->
+            List.Extra.setAt pos (Forwards 1) instructions
 
-                Remain ->
-                    List.Extra.setAt idx (Forwards 1) instructions
-
-                Backwards offset ->
-                    if offset == 1 then
-                        List.Extra.setAt idx (Remain) instructions
-                    else
-                        List.Extra.setAt idx (Backwards (offset - 1)) instructions
+        Backwards offset ->
+            if offset == 1 then
+                List.Extra.setAt pos (Remain) instructions
+            else
+                List.Extra.setAt pos (Backwards (offset - 1)) instructions
 
 
 forwardOffset : Offset -> Offset
@@ -135,20 +136,15 @@ forwardOffset offset =
 
 advancePosition : Position -> Instruction -> Int -> Position
 advancePosition position instruction exitIdx =
-    case position of
-        Exit ->
-            Exit
+    case instruction of
+        Forwards offset ->
+            forwards position offset exitIdx
 
-        Index idx ->
-            case instruction of
-                Forwards offset ->
-                    forwards idx offset exitIdx
+        Remain ->
+            position
 
-                Remain ->
-                    position
-
-                Backwards offset ->
-                    backwards idx offset
+        Backwards offset ->
+            backwards position offset
 
 
 forwards : Int -> Offset -> Int -> Position
@@ -157,10 +153,7 @@ forwards idx offset exitIdx =
         newIdx =
             idx + offset
     in
-        if newIdx >= exitIdx then
-            Exit
-        else
-            Index newIdx
+        newIdx
 
 
 backwards : Int -> Offset -> Position
@@ -170,9 +163,9 @@ backwards idx offset =
             idx - offset
     in
         if newIdx < 0 then
-            Index 0
+            0
         else
-            Index newIdx
+            newIdx
 
 
 toInstruction : Int -> Instruction
