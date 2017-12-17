@@ -32,16 +32,31 @@ type Redistributions
 
 solve : Banks -> Redistributions
 solve banks =
-    Redistributions 0
+    let
+        loop : List Banks -> Banks -> List Banks
+        loop configs banksuh =
+            if List.member banksuh configs then
+                configs
+            else
+                loop (configs ++ [ banksuh ]) <| Debug.log "cycle" <| cycle banksuh
+
+        redists =
+            List.length <| loop [] banks
+    in
+        Redistributions redists
 
 
 bankWithMostBlocks : Banks -> Bank
 bankWithMostBlocks banks =
     banks
         |> Array.toList
-        |> (sortWithDesc Tuple.second << List.sortBy Tuple.first)
+        |> sortByMostBlocksThenLowestIndex
         |> List.head
         |> Maybe.withDefault ( 0, 0 )
+
+
+sortByMostBlocksThenLowestIndex =
+    (sortWithDesc Tuple.second << List.sortBy Tuple.first)
 
 
 
