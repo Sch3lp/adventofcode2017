@@ -23,23 +23,22 @@ instructionTests =
 applyInstructionTests : Test
 applyInstructionTests =
     describe "applyInstruction"
-        [ only <|
-            test "Forwards 1: increases steps with 1, increases Offset with 1, jumps forwards 1 position" <|
-                \_ ->
-                    Path [ Forwards 1, Remain, Remain ] (Index 0) (Steps 0)
-                        |> applyInstruction (Forwards 1)
-                        |> Expect.equal
-                            (Path [ Forwards 2, Remain, Remain ] (Index 1) (Steps 1))
-        , test "Forwards 2: increases steps with 1, increases Offset with 1, jumps forwards 2 positions" <|
+        [ test "Forwards 1: increases steps with 1, increases Offset with 1, jumps forwards 1 position" <|
             \_ ->
                 Path [ Forwards 1, Remain, Remain ] (Index 0) (Steps 0)
+                    |> applyInstruction (Forwards 1)
+                    |> Expect.equal
+                        (Path [ Forwards 2, Remain, Remain ] (Index 1) (Steps 1))
+        , test "Forwards 2: increases steps with 1, increases Offset with 1, jumps forwards 2 positions" <|
+            \_ ->
+                Path [ Forwards 2, Remain, Remain ] (Index 0) (Steps 0)
                     |> applyInstruction (Forwards 2)
                     |> Expect.equal
-                        (Path [ Forwards 2, Remain, Remain ] (Index 2) (Steps 1))
+                        (Path [ Forwards 3, Remain, Remain ] (Index 2) (Steps 1))
         , test "Remain: increases steps with 1, becomes Forwards 1, remains on its position" <|
             \_ ->
                 Path [ Remain, Forwards 2, Remain ] (Index 0) (Steps 0)
-                    |> applyInstruction (Forwards 2)
+                    |> applyInstruction (Remain)
                     |> Expect.equal
                         (Path [ Forwards 1, Forwards 2, Remain ] (Index 0) (Steps 1))
         , test "Backwards 1: increases steps with 1, becomes Remain, jumps backwards 1 position" <|

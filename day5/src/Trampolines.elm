@@ -45,29 +45,24 @@ stepsToExit instructions =
 
 applyInstruction : Instruction -> Path -> Path
 applyInstruction instruction path =
-    case instruction of
-        Forwards offset ->
-            let
-                increasedSteps =
-                    increaseStepsTaken path.stepsTaken
+    let
+        increasedSteps =
+            increaseStepsTaken path.stepsTaken
 
-                updatedInstructions =
-                    updateInstructions path.position instruction path.instructions
+        updatedInstructions =
+            updateInstructions path.position instruction path.instructions
 
-                exitIdx =
-                    (List.length path.instructions) + 1
+        exitIdx =
+            (List.length path.instructions) + 1
 
-                newPosition =
-                    updatePosition path.position instruction exitIdx
-            in
-                { path
-                    | instructions = updatedInstructions
-                    , position = newPosition
-                    , stepsTaken = increasedSteps
-                }
-
-        _ ->
-            path
+        newPosition =
+            updatePosition path.position instruction exitIdx
+    in
+        { path
+            | instructions = updatedInstructions
+            , position = newPosition
+            , stepsTaken = increasedSteps
+        }
 
 
 updateInstructions : Position -> Instruction -> Instructions -> Instructions
@@ -80,6 +75,9 @@ updateInstructions pos instruction instructions =
             case instruction of
                 Forwards offset ->
                     List.Extra.setAt idx (Forwards (offset + 1)) instructions
+
+                Remain ->
+                    List.Extra.setAt idx (Forwards 1) instructions
 
                 _ ->
                     instructions
@@ -95,6 +93,9 @@ updatePosition position instruction exitIdx =
             case instruction of
                 Forwards offset ->
                     forwards idx offset exitIdx
+
+                Remain ->
+                    position
 
                 _ ->
                     position
