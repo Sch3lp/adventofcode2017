@@ -3,7 +3,7 @@ module MemoryBanks exposing (..)
 import Array exposing (..)
 
 
-type alias Block =
+type alias Blocks =
     Int
 
 
@@ -12,14 +12,14 @@ type alias Index =
 
 
 type alias Bank =
-    ( Index, Block )
+    ( Index, Blocks )
 
 
 type alias Banks =
     Array Bank
 
 
-banksFrom : List Block -> Banks
+banksFrom : List Blocks -> Banks
 banksFrom blocks =
     blocks
         |> List.indexedMap (,)
@@ -57,10 +57,37 @@ bankWithMostBlocks banks =
 cycle : Banks -> Banks
 cycle banks =
     let
-        toDistributeBank =
+        ( idxToDist, blocksToDist ) =
             bankWithMostBlocks banks
+
+        toDistributeBanks =
+            Array.set idxToDist ( idxToDist, 0 ) banks
+
+        idxToStartRedist =
+            idxToDist + 1
     in
+        redistribute blocksToDist idxToStartRedist toDistributeBanks
+
+
+redistribute : Blocks -> Index -> Banks -> Banks
+redistribute blocks idx banks =
+    if blocks == 0 then
         banks
+    else
+        let
+            { nextIdx, toDistributeBanks, blocksToDist } =
+                case Array.get idx banks of
+                    Nothing ->
+                        { nextIdx = 0, toDistributeBanks = banks, blocksToDist = blocks }
+
+                    Just ( _, blocksAtIdx ) ->
+                        let
+                            toDistBanks =
+                                Array.set idx ( idx, blocksAtIdx + 1 ) banks
+                        in
+                            { nextIdx = idx + 1, toDistributeBanks = toDistBanks, blocksToDist = blocks - 1 }
+        in
+            redistribute blocksToDist nextIdx toDistributeBanks
 
 
 

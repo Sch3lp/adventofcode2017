@@ -40,57 +40,55 @@ bankWithMostBlocksTest =
 
 redistributeTest : Test
 redistributeTest =
-    skip <|
-        describe "cycle"
-            [ skip <|
-                describe "spec"
-                    [ test "[0,2,7,0] -> [2,4,1,2]" <|
-                        \_ ->
-                            banksFrom [ 0, 2, 7, 0 ]
-                                |> cycle
-                                |> Expect.equal
-                                    (banksFrom [ 2, 4, 1, 2 ])
-                    , test "[2,4,1,2] -> [3,1,2,3]" <|
-                        \_ ->
-                            banksFrom [ 2, 4, 1, 2 ]
-                                |> cycle
-                                |> Expect.equal
-                                    (banksFrom [ 3, 1, 2, 3 ])
-                    , test "[3,1,2,3] -> [0,2,3,4]" <|
-                        \_ ->
-                            banksFrom [ 3, 1, 2, 3 ]
-                                |> cycle
-                                |> Expect.equal
-                                    (banksFrom [ 0, 2, 3, 4 ])
-                    , test "[0,2,3,4] -> [1,3,4,1]" <|
-                        \_ ->
-                            banksFrom [ 0, 2, 3, 4 ]
-                                |> cycle
-                                |> Expect.equal
-                                    (banksFrom [ 1, 3, 4, 1 ])
-                    , test "[1,3,4,1] -> [2,4,1,2]" <|
-                        \_ ->
-                            banksFrom [ 1, 3, 4, 1 ]
-                                |> cycle
-                                |> Expect.equal
-                                    (banksFrom [ 2, 4, 1, 2 ])
-                    ]
-            , test "from the start [3,0,0] -> [1,1,1]" <|
+    describe "cycle"
+        [ describe "spec"
+            [ test "[0,2,7,0] -> [2,4,1,2]" <|
                 \_ ->
-                    banksFrom [ 3, 0, 0 ]
+                    banksFrom [ 0, 2, 7, 0 ]
                         |> cycle
                         |> Expect.equal
-                            (banksFrom [ 1, 1, 1 ])
-            , test "from the end [0,0,3] -> [1,1,1]" <|
+                            (banksFrom [ 2, 4, 1, 2 ])
+            , test "[2,4,1,2] -> [3,1,2,3]" <|
                 \_ ->
-                    banksFrom [ 0, 0, 3 ]
+                    banksFrom [ 2, 4, 1, 2 ]
                         |> cycle
                         |> Expect.equal
-                            (banksFrom [ 1, 1, 1 ])
-            , test "from the middle [0,3,0] -> [1,1,1]" <|
+                            (banksFrom [ 3, 1, 2, 3 ])
+            , test "[3,1,2,3] -> [0,2,3,4]" <|
                 \_ ->
-                    banksFrom [ 0, 3, 0 ]
+                    banksFrom [ 3, 1, 2, 3 ]
                         |> cycle
                         |> Expect.equal
-                            (banksFrom [ 1, 1, 1 ])
+                            (banksFrom [ 0, 2, 3, 4 ])
+            , test "[0,2,3,4] -> [1,3,4,1]" <|
+                \_ ->
+                    banksFrom [ 0, 2, 3, 4 ]
+                        |> cycle
+                        |> Expect.equal
+                            (banksFrom [ 1, 3, 4, 1 ])
+            , test "[1,3,4,1] -> [2,4,1,2]" <|
+                \_ ->
+                    banksFrom [ 1, 3, 4, 1 ]
+                        |> cycle
+                        |> Expect.equal
+                            (banksFrom [ 2, 4, 1, 2 ])
             ]
+        , test "from the start [3,0,0] -> [1,1,1]" <|
+            \_ ->
+                banksFrom [ 3, 0, 0 ]
+                    |> cycle
+                    |> Expect.equal
+                        (banksFrom [ 1, 1, 1 ])
+        , test "from the end [0,0,3] -> [1,1,1]" <|
+            \_ ->
+                banksFrom [ 0, 0, 3 ]
+                    |> cycle
+                    |> Expect.equal
+                        (banksFrom [ 1, 1, 1 ])
+        , test "from the middle [0,3,0] -> [1,1,1]" <|
+            \_ ->
+                banksFrom [ 0, 3, 0 ]
+                    |> cycle
+                    |> Expect.equal
+                        (banksFrom [ 1, 1, 1 ])
+        ]
