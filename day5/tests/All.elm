@@ -10,7 +10,7 @@ suite =
     describe "Trampolines"
         [ instructionTests
         , parseTests
-        , skip <| solveTest
+        , solveTest
         ]
 
 

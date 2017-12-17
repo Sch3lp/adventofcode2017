@@ -113,7 +113,7 @@ advanceInstructionAtPosition pos instruction instructions =
         Index idx ->
             case instruction of
                 Forwards offset ->
-                    List.Extra.setAt idx (Forwards (offset + 1)) instructions
+                    List.Extra.setAt idx (Forwards (forwardOffset offset)) instructions
 
                 Remain ->
                     List.Extra.setAt idx (Forwards 1) instructions
@@ -123,6 +123,14 @@ advanceInstructionAtPosition pos instruction instructions =
                         List.Extra.setAt idx (Remain) instructions
                     else
                         List.Extra.setAt idx (Backwards (offset - 1)) instructions
+
+
+forwardOffset : Offset -> Offset
+forwardOffset offset =
+    if (offset >= 3) then
+        offset - 1
+    else
+        offset + 1
 
 
 advancePosition : Position -> Instruction -> Int -> Position
