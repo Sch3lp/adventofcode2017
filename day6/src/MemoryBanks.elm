@@ -1,17 +1,6 @@
 module MemoryBanks exposing (..)
 
-
-type alias Banks =
-    List Bank
-
-
-banksFrom : List Block -> Banks
-banksFrom =
-    List.indexedMap (,)
-
-
-type Redistributions
-    = Redistributions Int
+import Array exposing (..)
 
 
 type alias Block =
@@ -26,6 +15,21 @@ type alias Bank =
     ( Index, Block )
 
 
+type alias Banks =
+    Array Bank
+
+
+banksFrom : List Block -> Banks
+banksFrom blocks =
+    blocks
+        |> List.indexedMap (,)
+        |> Array.fromList
+
+
+type Redistributions
+    = Redistributions Int
+
+
 solve : Banks -> Redistributions
 solve banks =
     Redistributions 0
@@ -34,6 +38,7 @@ solve banks =
 bankWithMostBlocks : Banks -> Bank
 bankWithMostBlocks banks =
     banks
+        |> Array.toList
         |> (sortWithDesc Tuple.second << List.sortBy Tuple.first)
         |> List.head
         |> Maybe.withDefault ( 0, 0 )
@@ -49,9 +54,13 @@ bankWithMostBlocks banks =
 -- if it reaches the last memory bank, it wraps around to the first one.
 
 
-redistribute : Block -> Banks -> Banks
-redistribute toDistribute banks =
-    banks
+cycle : Banks -> Banks
+cycle banks =
+    let
+        toDistributeBank =
+            bankWithMostBlocks banks
+    in
+        banks
 
 
 
