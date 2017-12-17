@@ -50,21 +50,21 @@ stepsToExit instructions =
     let
         initialPath =
             Path instructions (Index 0) (Steps 0)
-
-        applyInstructions : Path -> Path
-        applyInstructions =
-            \path ->
-                case path.position of
-                    Exit ->
-                        path
-
-                    Index idx ->
-                        applyInstructions <| applyInstructionHelper (instructionAt path idx) path
     in
         initialPath
             |> applyInstructions
             |> .stepsTaken
             |> .steps
+
+
+applyInstructions : Path -> Path
+applyInstructions path =
+    case path.position of
+        Exit ->
+            path
+
+        Index idx ->
+            applyInstructions <| applyInstructionHelper (instructionAt path idx) path
 
 
 instructionAt : Path -> Int -> Maybe Instruction
