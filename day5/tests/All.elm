@@ -9,6 +9,52 @@ suite : Test
 suite =
     describe "Trampolines"
         [ instructionTests
+        , parseTests
+        , solveTest
+        ]
+
+
+solveTest : Test
+solveTest =
+    describe "solve"
+        [ test "given puzzle input" <|
+            \_ ->
+                solve """
+                0
+                """
+                    |> Expect.equal 1
+        ]
+
+
+parseTests : Test
+parseTests =
+    describe "parsing"
+        [ describe "toInstruction"
+            [ test "negative number becomes Backwards with absolute" <|
+                \_ ->
+                    toInstruction -7687
+                        |> Expect.equal (Backwards 7687)
+            , test "0 becomes Remain" <|
+                \_ ->
+                    toInstruction 0
+                        |> Expect.equal (Remain)
+            , test "positive number becomes Forwards with absolute" <|
+                \_ ->
+                    toInstruction 999
+                        |> Expect.equal (Forwards 999)
+            ]
+        , describe "toInstructions"
+            [ test "given numbers seperated with newLines, produces Instructions" <|
+                \_ ->
+                    toInstructions """
+                                    -1
+                                    0
+                                    3
+                                    1
+                                    -999
+                                    """
+                        |> Expect.equal [ Backwards 1, Remain, Forwards 3, Forwards 1, Backwards 999 ]
+            ]
         ]
 
 

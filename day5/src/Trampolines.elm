@@ -38,6 +38,13 @@ type alias Path =
     }
 
 
+solve : String -> Int
+solve input =
+    input
+        |> toInstructions
+        |> stepsToExit
+
+
 stepsToExit : Instructions -> Int
 stepsToExit instructions =
     let
@@ -158,3 +165,23 @@ backwards idx offset =
             Index 0
         else
             Index newIdx
+
+
+toInstruction : Int -> Instruction
+toInstruction number =
+    if number == 0 then
+        Remain
+    else if number < 0 then
+        Backwards (abs number)
+    else
+        Forwards number
+
+
+toInstructions : String -> Instructions
+toInstructions input =
+    input
+        |> String.lines
+        |> List.map String.trim
+        |> List.map String.toInt
+        |> List.filterMap Result.toMaybe
+        |> List.map toInstruction
