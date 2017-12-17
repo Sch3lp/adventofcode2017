@@ -10,7 +10,7 @@ suite =
     describe "Trampolines"
         [ instructionTests
         , parseTests
-        , solveTest
+        , skip <| solveTest
         ]
 
 
@@ -99,6 +99,18 @@ applyInstructionTests =
                     |> applyInstruction (Forwards 2)
                     |> Expect.equal
                         (Path [ Remain, Forwards 3, Backwards 2 ] (Exit) (Steps 1))
+        , test "Forwards 3: increases steps with 1, decreases Offset with 1, jumps forwards 3 positions" <|
+            \_ ->
+                Path [ Remain, Forwards 3, Backwards 2 ] (Index 1) (Steps 0)
+                    |> applyInstruction (Forwards 3)
+                    |> Expect.equal
+                        (Path [ Remain, Forwards 2, Backwards 2 ] (Exit) (Steps 1))
+        , test "Forwards 4: increases steps with 1, decreases Offset with 1, jumps forwards 4 positions" <|
+            \_ ->
+                Path [ Remain, Forwards 4, Backwards 2, Remain, Remain, Remain ] (Index 1) (Steps 0)
+                    |> applyInstruction (Forwards 4)
+                    |> Expect.equal
+                        (Path [ Remain, Forwards 3, Backwards 2, Remain, Remain, Remain ] (Index 5) (Steps 1))
         ]
 
 
