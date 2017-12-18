@@ -1,7 +1,32 @@
 module RecursiveCircus exposing (..)
 
-import Array exposing (..)
 import List.Extra exposing (..)
+
+
+type Disc
+    = List
+
+
+type Tower a
+    = Disc a
+    | Top a
+
+
+type alias Name =
+    String
+
+
+type alias Weight =
+    Int
+
+
+type Program
+    = Program Name Weight
+
+
+type alias ProgramTower =
+    Tower Program
+
 
 
 -- Util
