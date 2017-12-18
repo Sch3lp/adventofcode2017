@@ -1,6 +1,9 @@
 module RecursiveCircus exposing (..)
 
 import List.Extra exposing (..)
+import Parser exposing (Parser, (|.), (|=), succeed, symbol, float, ignore, zeroOrMore)
+import Parser.LanguageKit exposing (variable)
+import Char
 
 
 type Tower a
@@ -46,7 +49,44 @@ appendTowerTo towerToAdd tower =
 
 parseLine : String -> Program
 parseLine input =
-    Program "" 0
+    input
+        |> Parser.run program
+        |> Result.toMaybe
+        |> Maybe.withDefault (Program "" 0)
+
+
+program : Parser Program
+program =
+    succeed Program
+        |. spaces
+        |= programName
+        |. spaces
+        |. symbol "("
+        |= programWeight
+        |. symbol ")"
+        |. Parser.end
+
+
+spaces : Parser ()
+spaces =
+    ignore zeroOrMore (\c -> c == ' ')
+
+
+programName : Parser String
+programName =
+    Parser.keep Parser.oneOrMore isChar
+
+
+programWeight : Parser Weight
+programWeight =
+    Parser.int
+
+
+isChar : Char -> Bool
+isChar char =
+    Char.isLower char
+        || Char.isUpper char
+        || Char.isDigit char
 
 
 
