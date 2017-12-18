@@ -51,15 +51,15 @@ appendTowerTo towerToAdd tower =
 -- Parsing
 
 
-parseLines : String -> List Program
-parseLines input =
+parsePrograms : String -> List Program
+parsePrograms input =
     input
         |> String.lines
-        |> List.filterMap parseLine
+        |> List.filterMap parseProgram
 
 
-parseLine : String -> Maybe Program
-parseLine input =
+parseProgram : String -> Maybe Program
+parseProgram input =
     input
         |> Parser.run program
         -- |> Debug.log "program"
