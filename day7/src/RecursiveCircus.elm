@@ -47,12 +47,23 @@ appendTowerTo towerToAdd tower =
             Disc a <| towers ++ [ towerToAdd ]
 
 
-parseLine : String -> Program
+
+-- Parsing
+
+
+parseLines : String -> List Program
+parseLines input =
+    input
+        |> String.lines
+        |> List.filterMap parseLine
+
+
+parseLine : String -> Maybe Program
 parseLine input =
     input
         |> Parser.run program
+        -- |> Debug.log "program"
         |> Result.toMaybe
-        |> Maybe.withDefault (Program "" 0)
 
 
 program : Parser Program
@@ -64,12 +75,6 @@ program =
         |. symbol "("
         |= programWeight
         |. symbol ")"
-        |. Parser.end
-
-
-spaces : Parser ()
-spaces =
-    ignore zeroOrMore (\c -> c == ' ')
 
 
 programName : Parser String
@@ -87,6 +92,11 @@ isChar char =
     Char.isLower char
         || Char.isUpper char
         || Char.isDigit char
+
+
+spaces : Parser ()
+spaces =
+    ignore zeroOrMore (\c -> c == ' ')
 
 
 

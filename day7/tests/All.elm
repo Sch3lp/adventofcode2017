@@ -69,10 +69,34 @@ towerTests =
 
 parseTests : Test
 parseTests =
-    describe "parseLine"
-        [ test "no arrows returns a Program" <|
-            \_ ->
-                "pbga (66)"
-                    |> parseLine
-                    |> Expect.equal (Program "pbga" 66)
+    describe "parseTests"
+        [ describe "parseLines"
+            [ test "Parsing a Program" <|
+                \_ ->
+                    """
+                    ebii (61)
+                    jptl (61)
+                    ugml (68) -> gyxo, ebii, jptl
+                    gyxo (61)
+                    """
+                        |> parseLines
+                        |> Expect.equal ([ Program "ebii" 61, Program "jptl" 61, Program "ugml" 68, Program "gyxo" 61 ])
+            ]
+        , describe "parseLine"
+            [ test "Parsing a Program" <|
+                \_ ->
+                    "pbga (66)"
+                        |> parseLine
+                        |> Expect.equal (Just <| Program "pbga" 66)
+            , test "Parsing a Program with trailing space" <|
+                \_ ->
+                    "pbga (66) "
+                        |> parseLine
+                        |> Expect.equal (Just <| Program "pbga" 66)
+            , test "Parsing a Program with an arrow" <|
+                \_ ->
+                    "ugml (68) -> gyxo, ebii, jptl"
+                        |> parseLine
+                        |> Expect.equal (Just <| Program "ugml" 68)
+            ]
         ]
