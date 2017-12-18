@@ -8,14 +8,17 @@ import MemoryBanks exposing (..)
 solveTest : Test
 solveTest =
     describe "solve"
-        [ test "spec" <|
-            \_ ->
-                banksFrom [ 0, 2, 7, 0 ]
-                    |> solve
-                    |> Expect.equal (Redistributions 5)
+        [ skip <|
+            test "spec" <|
+                \_ ->
+                    banksFrom [ 0, 2, 7, 0 ]
+                        |> solve
+                        |> Expect.equal (Redistributions 5)
         , test "given puzzle input" <|
             \_ ->
-                --daans input: 0, 5, 10, 0, 11, 14, 13, 4, 11, 8, 8, 7, 1, 4, 12, 11
+                --daans input (infinite loop): 0, 5, 10, 0, 11, 14, 13, 4, 11, 8, 8, 7, 1, 4, 12, 11
+                --marko input (infinite loop): 10, 3, 15, 10, 5, 15, 5, 15, 9, 2, 5, 8, 5, 2, 3, 6
+                --tibi input: 4, 1, 15, 12, 0, 9, 9, 5, 5, 8, 7, 3, 14, 5, 12, 3
                 --my input: 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6
                 banksFrom [ 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6 ]
                     |> solve

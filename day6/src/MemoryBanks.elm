@@ -36,9 +36,17 @@ solve givenBanks =
         loop : List Banks -> Banks -> List Banks
         loop configurations banks =
             if List.member banks configurations then
-                configurations
+                let
+                    snarf =
+                        Debug.log "found previous configuration" <| Array.map Tuple.second banks
+                in
+                    configurations
             else
-                loop (banks :: configurations) <| Debug.log "cycle" <| cycle banks
+                let
+                    snarf =
+                        Debug.log "cycle" <| Array.map Tuple.second <| cycle banks
+                in
+                    loop (banks :: configurations) <| cycle banks
 
         redists =
             List.length <| loop [] givenBanks
