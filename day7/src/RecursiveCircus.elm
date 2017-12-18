@@ -3,12 +3,8 @@ module RecursiveCircus exposing (..)
 import List.Extra exposing (..)
 
 
-type Disc
-    = List
-
-
 type Tower a
-    = Disc a
+    = Disc a (List (Tower a))
     | Top a
 
 
@@ -26,6 +22,16 @@ type Program
 
 type alias ProgramTower =
     Tower Program
+
+
+programOf : ProgramTower -> Program
+programOf tower =
+    case tower of
+        Top a ->
+            a
+
+        Disc a subtower ->
+            a
 
 
 
