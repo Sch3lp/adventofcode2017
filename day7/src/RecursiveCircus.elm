@@ -44,6 +44,11 @@ appendTowerTo towerToAdd tower =
             Disc a <| towers ++ [ towerToAdd ]
 
 
+parseLine : String -> Program
+parseLine input =
+    Program "" 0
+
+
 
 -- Util
 

@@ -65,3 +65,14 @@ towerTests =
                         appendTowerTo top2 topToAddTo |> Expect.equal (Disc topProgram [ top1, top2 ])
             ]
         ]
+
+
+parseTests : Test
+parseTests =
+    describe "parseLine"
+        [ test "no arrows returns a Program" <|
+            \_ ->
+                "pbga (66)"
+                    |> parseLine
+                    |> Expect.equal (Program "pbga" 66)
+        ]
