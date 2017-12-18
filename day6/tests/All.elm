@@ -15,6 +15,8 @@ solveTest =
                     |> Expect.equal (Redistributions 5)
         , test "given puzzle input" <|
             \_ ->
+                --daans input: 0, 5, 10, 0, 11, 14, 13, 4, 11, 8, 8, 7, 1, 4, 12, 11
+                --my input: 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6
                 banksFrom [ 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6 ]
                     |> solve
                     |> Expect.equal (Redistributions 1)

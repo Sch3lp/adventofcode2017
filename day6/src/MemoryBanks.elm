@@ -31,17 +31,17 @@ type Redistributions
 
 
 solve : Banks -> Redistributions
-solve banks =
+solve givenBanks =
     let
         loop : List Banks -> Banks -> List Banks
-        loop configs banksuh =
-            if List.member banksuh configs then
-                configs
+        loop configurations banks =
+            if List.member banks configurations then
+                configurations
             else
-                loop (configs ++ [ banksuh ]) <| Debug.log "cycle" <| cycle banksuh
+                loop (banks :: configurations) <| Debug.log "cycle" <| cycle banks
 
         redists =
-            List.length <| loop [] banks
+            List.length <| loop [] givenBanks
     in
         Redistributions redists
 
