@@ -1,6 +1,7 @@
 module MemoryBanks exposing (..)
 
 import Array exposing (..)
+import List.Extra exposing (..)
 
 
 type alias Blocks =
@@ -132,4 +133,4 @@ desc extractor left right =
 
 sortWithDesc : (a -> comparable) -> List a -> List a
 sortWithDesc extractor =
-    List.sortWith <| desc <| extractor
+    List.Extra.stableSortWith <| desc <| extractor

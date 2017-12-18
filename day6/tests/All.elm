@@ -3,17 +3,34 @@ module All exposing (..)
 import Expect exposing (Expectation)
 import Test exposing (..)
 import MemoryBanks exposing (..)
+import DaansMemory exposing (..)
+
+
+daanSolveTest : Test
+daanSolveTest =
+    skip <|
+        describe "daanSolve"
+            [ test "spec" <|
+                \_ ->
+                    "0;2;7;0"
+                        |> DaansMemory.solve
+                        |> Expect.equal 5
+            , test "puzzle" <|
+                \_ ->
+                    "5;1;10;0;1;7;13;14;3;12;8;10;7;12;0;6"
+                        |> DaansMemory.solve
+                        |> Expect.equal 5
+            ]
 
 
 solveTest : Test
 solveTest =
     describe "solve"
-        [ skip <|
-            test "spec" <|
-                \_ ->
-                    banksFrom [ 0, 2, 7, 0 ]
-                        |> solve
-                        |> Expect.equal (Redistributions 5)
+        [ test "spec" <|
+            \_ ->
+                banksFrom [ 0, 2, 7, 0 ]
+                    |> MemoryBanks.solve
+                    |> Expect.equal (Redistributions 5)
         , test "given puzzle input" <|
             \_ ->
                 --daans input (infinite loop): 0, 5, 10, 0, 11, 14, 13, 4, 11, 8, 8, 7, 1, 4, 12, 11
@@ -21,7 +38,7 @@ solveTest =
                 --tibi input: 4, 1, 15, 12, 0, 9, 9, 5, 5, 8, 7, 3, 14, 5, 12, 3
                 --my input: 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6
                 banksFrom [ 5, 1, 10, 0, 1, 7, 13, 14, 3, 12, 8, 10, 7, 12, 0, 6 ]
-                    |> solve
+                    |> MemoryBanks.solve
                     |> Expect.equal (Redistributions 1)
         ]
 
@@ -34,7 +51,7 @@ bankWithMostBlocksTest =
                 banksFrom [ 0, 5, 2, 9, 1 ]
                     |> bankWithMostBlocks
                     |> Expect.equal ( 3, 9 )
-        , test "[0,9,2,9,1,9] => Bank at index 1 with 9, ties won by bank with lowest index" <|
+        , test "[0,9,2,9,1,9] => Bank at index 1 with 9, tie is won by bank with lowest index" <|
             \_ ->
                 banksFrom [ 0, 9, 2, 9, 1, 9 ]
                     |> bankWithMostBlocks
@@ -47,8 +64,8 @@ bankWithMostBlocksTest =
         ]
 
 
-redistributeTest : Test
-redistributeTest =
+cycleTest : Test
+cycleTest =
     describe "cycle"
         [ describe "spec"
             [ test "[0,2,7,0] -> [2,4,1,2]" <|
