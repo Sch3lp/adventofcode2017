@@ -34,6 +34,16 @@ programOf tower =
             a
 
 
+appendTowerTo : ProgramTower -> ProgramTower -> ProgramTower
+appendTowerTo towerToAdd tower =
+    case tower of
+        Top a ->
+            Disc a [ towerToAdd ]
+
+        Disc a towers ->
+            Disc a <| towers ++ [ towerToAdd ]
+
+
 
 -- Util
 
