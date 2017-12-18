@@ -37,12 +37,22 @@ solve givenBanks =
         loop : List Banks -> Banks -> List Banks
         loop configurations banks =
             if List.member banks configurations then
-                configurations
+                banks :: configurations
             else
                 loop (banks :: configurations) <| cycle banks
 
+        configs =
+            loop [] givenBanks
+
         redists =
-            List.length <| loop [] givenBanks
+            configs |> List.length |> flip (-) 1
+
+        -- snarf =
+        --     configs
+        --         |> List.head
+        --         |> Maybe.withDefault Array.empty
+        --         |> Array.map Tuple.second
+        --         |> Debug.log "solution"
     in
         Redistributions redists
 

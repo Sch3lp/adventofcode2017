@@ -21,6 +21,22 @@ solveTest =
         ]
 
 
+solve2Test : Test
+solve2Test =
+    describe "solve2"
+        [ test "spec" <|
+            \_ ->
+                banksFrom [ 2, 4, 1, 2 ]
+                    |> solve
+                    |> Expect.equal (Redistributions 4)
+        , test "given puzzle input" <|
+            \_ ->
+                banksFrom [ 1, 1, 14, 13, 12, 11, 10, 9, 8, 7, 7, 5, 5, 3, 3, 0 ]
+                    |> solve
+                    |> Expect.equal (Redistributions 1)
+        ]
+
+
 bankWithMostBlocksTest : Test
 bankWithMostBlocksTest =
     describe "bankWithMostBlocks"
